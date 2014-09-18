@@ -69,7 +69,7 @@ import edu.missouri.niaaa.craving.services.SensorLocationService.MyBinder;
 public class MainActivity extends Activity {
 
 	private final Logger log = Logger
-			.getLogger(MainActivity.class);
+.getLogger(this.getClass());
 	static String TAG = "Main activity~~~~~~~~";
 
 	final static int INTENT_REQUEST_MAMAGE = 1;
@@ -441,7 +441,7 @@ public class MainActivity extends Activity {
 				    			c.setTimeInMillis(startTimeStamp);
 
 				    			try {
-				    				Utilities.writeEventToFile(MainActivity.this, Utilities.CODE_SUSPENSION, "", "", "", "",
+				    				Utilities.writeEventToFileAndUpload(MainActivity.this, Utilities.CODE_SUSPENSION, "", "", "", "",
 				    						Utilities.sdf.format(c.getTime()), Utilities.sdf.format(Calendar.getInstance().getTime()));
 				    			} catch (IOException e) {
 				    				// TODO Auto-generated catch block
@@ -839,7 +839,7 @@ public class MainActivity extends Activity {
 			c.setTimeInMillis(startTimeStamp);
 
 			try {
-				Utilities.writeEventToFile(MainActivity.this, Utilities.CODE_SUSPENSION, "", "", "", "",
+				Utilities.writeEventToFileAndUpload(MainActivity.this, Utilities.CODE_SUSPENSION, "", "", "", "",
 						Utilities.sdf.format(c.getTime()), Utilities.sdf.format(Calendar.getInstance().getTime()));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

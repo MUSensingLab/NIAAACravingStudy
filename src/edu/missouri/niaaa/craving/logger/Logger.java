@@ -27,23 +27,23 @@ public class Logger implements Serializable {
         return new Logger(clazz.getSimpleName());
     }
 
-	public static void d(String msg) {
+	public void d(String msg) {
 		Log.d(tagSuffix, msg);
     }
 
-	public static void e(String msg) {
+	public void e(String msg) {
 		Log.e(tagSuffix, msg);
 	}
 
-	public static void i(String msg) {
+	public void i(String msg) {
 		Log.i(tagSuffix, msg);
 	}
 
-	public static void v(String msg) {
+	public void v(String msg) {
 		Log.v(tagSuffix, msg);
 	}
 
-	public static void w(String msg) {
+	public void w(String msg) {
 		Log.w(tagSuffix, msg);
 	}
 }

@@ -129,7 +129,7 @@ public class MorningScheduler extends Activity {
 					nf = null;
 					
 					try {
-						Utilities.writeEventToFile(MorningScheduler.this, Utilities.CODE_BEDTIME, 
+						Utilities.writeEventToFileAndUpload(MorningScheduler.this, Utilities.CODE_BEDTIME, 
 								Utilities.sdf.format(Utilities.getMorningCal(hour, minute).getTime()), "", "", "",  
 								Utilities.sdf.format(startBedReportCal.getTime()), 
 								Utilities.sdf.format(Calendar.getInstance().getTime()));
