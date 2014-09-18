@@ -1,10 +1,10 @@
 package edu.missouri.niaaa.craving.location;
 
-import edu.missouri.niaaa.craving.Utilities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import edu.missouri.niaaa.craving.Utilities;
 
 public class LocationBroadcast extends BroadcastReceiver {
 
@@ -14,8 +14,6 @@ public class LocationBroadcast extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-
 		
 		String action = intent.getAction();
 		locationM = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

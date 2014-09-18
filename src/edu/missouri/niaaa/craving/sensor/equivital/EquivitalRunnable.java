@@ -1,27 +1,10 @@
 package edu.missouri.niaaa.craving.sensor.equivital;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.math.BigInteger;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.RSAPublicKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,16 +15,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-
-
-
-
 //Ricky
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 
 import com.equivital.sdk.ISemConnection;
@@ -56,9 +34,6 @@ import com.equivital.sdk.decoder.events.SemSummaryDataEventArgs;
 
 import edu.missouri.niaaa.craving.Utilities;
 import edu.missouri.niaaa.craving.services.SensorLocationService;
-
-
-
 
 public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents, ISemDeviceAccelerometerEvents {
 	
@@ -264,9 +239,9 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents, ISe
 //        File encStat = new File(Utilities.PHONE_BASE_PATH,"encStat.txt");
          String endataToWrite = null;
          try {
-        	 if(Utilities.WRITE_RAW) 
-        		 Utilities.writeToFile(file_name, dataToWrite);
-        	 else{
+        	 if(Utilities.WRITE_RAW) {
+				Utilities.writeToFile(file_name, dataToWrite);
+			} else{
         		 endataToWrite = Utilities.encryption(dataToWrite);
         		 Utilities.writeToFileEnc(file_name, endataToWrite);
         	 }
@@ -329,9 +304,9 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents, ISe
 		//chen
 		String endataToWrite = null;
          try {
-        	 if(Utilities.WRITE_RAW) 
-        		 Utilities.writeToFile(file_name, dataToWrite);
-        	 else{
+        	 if(Utilities.WRITE_RAW) {
+				Utilities.writeToFile(file_name, dataToWrite);
+			} else{
         		 endataToWrite = Utilities.encryption(dataToWrite);
         		 Utilities.writeToFileEnc(file_name, endataToWrite);
         	 }

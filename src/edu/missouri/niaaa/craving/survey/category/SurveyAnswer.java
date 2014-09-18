@@ -1,7 +1,5 @@
 package edu.missouri.niaaa.craving.survey.category;
 
-import android.util.Log;
-
 public class SurveyAnswer implements Answer, Cloneable {
 
 	//constructor param
@@ -45,35 +43,42 @@ public class SurveyAnswer implements Answer, Cloneable {
 	
 	
 /*	setter*/
+	@Override
 	public void setAnswerText(String answerText){
 		//this.answerText = answerText;
 		this.answerText = answerText;
 	}
 	
 	//action
+	@Override
 	public void setClear(boolean clear){
 		this.clearOthers = clear;
 	}
 	
+	@Override
 	public void setExtraInput(boolean extraInput){
 		this.extraInput = extraInput;
 	}
 	
 	//trigger
+	@Override
 	public void setSurveyTrigger(String name) {
 		this.triggerFile = name;
 	}
 	
 
 	//
+	@Override
 	public void setSelected(boolean selected){
 		this.selected = selected;
 	}
 	
+	@Override
 	public void setSkip(String id) {
 		this.skipId = id;
 	}
 	
+	@Override
 	public void setOption(String opt){
 		this.option = opt;
 		hasOption = true;
@@ -82,51 +87,62 @@ public class SurveyAnswer implements Answer, Cloneable {
 	
 	
 /*	getter*/
+	@Override
 	public String getId(){
 		return this.answerId;
 	}
 	
+	@Override
 	public String getAnswerText(){
 		return this.answerText;
 	}
 	
+	@Override
 	public String getAnswerInput(){
 		return this.answerInput;
 	}
 	
 	//action
+	@Override
 	public boolean checkClear(){
 		return clearOthers;
 	}
 	
+	@Override
 	public boolean getExtraInput(){
 		return this.extraInput;
 	}
 	
 	
 	//trigger
+	@Override
 	public String getTriggerFile() {
 		return this.triggerFile;
 	}
 	
+	@Override
 	public boolean hasSurveyTrigger(){
 		return hasTrigger;
 	}
 	
 	
 	//
+	@Override
 	public boolean isSelected(){
 		return selected;
 	}
 	
+	@Override
 	public String getSkip() {
 		return skipId;
 	}
 	
+	@Override
 	public String getOption(){
 		return option;
 	}
 	
+	@Override
 	public boolean hasOption(){
 		return hasOption;
 	}
@@ -134,11 +150,15 @@ public class SurveyAnswer implements Answer, Cloneable {
 
 	
 /*	function*/
+	@Override
 	public boolean equals(Answer answer){
-		if(answer == null) return false;
+		if(answer == null) {
+			return false;
+		}
 		if(this.getId().equals(answer.getId()) &&
-				this.getAnswerText().equals(answer.getAnswerText()))
+				this.getAnswerText().equals(answer.getAnswerText())) {
 			return true;
+		}
 		return false;		
 	}
 	

@@ -2,10 +2,10 @@ package edu.missouri.niaaa.craving.survey;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import android.util.Log;
 
 /* Author: Paul Baskett
  * Last Update: 9/25/2012

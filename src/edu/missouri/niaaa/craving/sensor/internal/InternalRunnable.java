@@ -18,19 +18,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import edu.missouri.niaaa.craving.Utilities;
-import edu.missouri.niaaa.craving.services.SensorLocationService;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
-
 //Ricky 2013/12/09
 import android.os.AsyncTask;
+import android.util.Log;
+import edu.missouri.niaaa.craving.Utilities;
+import edu.missouri.niaaa.craving.services.SensorLocationService;
 
 public class InternalRunnable implements Runnable, SensorEventListener {// haven't been used for now
 	

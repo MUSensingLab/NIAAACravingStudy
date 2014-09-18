@@ -1,6 +1,7 @@
 package edu.missouri.niaaa.craving.survey.category;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.widget.LinearLayout;
 

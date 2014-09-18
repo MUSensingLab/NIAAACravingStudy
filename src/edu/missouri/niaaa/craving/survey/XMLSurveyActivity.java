@@ -21,12 +21,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.xml.sax.InputSource;
 
-import edu.missouri.niaaa.craving.R;
-import edu.missouri.niaaa.craving.Utilities;
-import edu.missouri.niaaa.craving.survey.category.Answer;
-import edu.missouri.niaaa.craving.survey.category.Category;
-import edu.missouri.niaaa.craving.survey.category.Question;
-import edu.missouri.niaaa.craving.survey.category.RandomCategory;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,19 +36,25 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.missouri.niaaa.craving.R;
+import edu.missouri.niaaa.craving.Utilities;
+import edu.missouri.niaaa.craving.survey.category.Answer;
+import edu.missouri.niaaa.craving.survey.category.Category;
+import edu.missouri.niaaa.craving.survey.category.Question;
+import edu.missouri.niaaa.craving.survey.category.RandomCategory;
 
 public class XMLSurveyActivity extends Activity {
 
@@ -283,8 +283,9 @@ public class XMLSurveyActivity extends Activity {
 			currentCategory = cats.get(0);
 			//Setup the layout
 			ViewGroup vg = setupLayout(nextQuestionLayout());
-			if(vg != null)
+			if(vg != null) {
 				setContentView(vg);
+			}
 		}
 		
 		
@@ -320,8 +321,9 @@ public class XMLSurveyActivity extends Activity {
         	ed.putString(Utilities.SP_KEY_REMINDER_INFO_3, "").commit();
         }
 		
-		if(Utilities.RELEASE)
+		if(Utilities.RELEASE) {
 			return getString(R.string.pin_title);
+		}
 		return getString(R.string.pin_title) + " for reminder "+ seq;
 	}
 	
@@ -347,8 +349,9 @@ public class XMLSurveyActivity extends Activity {
 			
 			shp = Utilities.getSP(this, Utilities.SP_SURVEY);
 			dialogTitle = getDialogTitle();
-			if(pinDialog.isShowing())
+			if(pinDialog.isShowing()) {
 				pinDialog.dismiss();
+			}
 			pinDialog = PinCheckDialog(this);
 			pinDialog.show();
 		}
@@ -409,6 +412,7 @@ public class XMLSurveyActivity extends Activity {
 		builder.setTitle(dialogTitle);
 		builder.setView(DialogView);  
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				
 				EditText pinEdite = (EditText) DialogView.findViewById(R.id.pin_edit);
@@ -452,7 +456,8 @@ public class XMLSurveyActivity extends Activity {
 		});
 		
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int whichButton) {  
+		    @Override
+			public void onClick(DialogInterface dialog, int whichButton) {  
 		    	
 		    	soundp.stop(streamID);
 				finish();
@@ -599,13 +604,15 @@ public class XMLSurveyActivity extends Activity {
     	boolean done = false;
     	boolean allowSkip = false;
     	
-    	if(currentQuestion != null && !hasSkip)
-    		skipFrom = currentQuestion.getId();
+    	if(currentQuestion != null && !hasSkip) {
+			skipFrom = currentQuestion.getId();
+		}
     	
     	
     	do{
-    		if(temp != null)
-    			answerMap.put(temp.getId(), null);
+    		if(temp != null) {
+				answerMap.put(temp.getId(), null);
+			}
     		
     		//Simplest case: category has the next question
     		temp = currentCategory.nextQuestion();
@@ -753,8 +760,9 @@ public class XMLSurveyActivity extends Activity {
 				// TODO Auto-generated method stub
 				
 				ViewGroup vg = setupLayout(lastQuestionLayout());
-				if(vg != null)
+				if(vg != null) {
 					setContentView(vg);
+				}
 				
 				if(backButton.getText().equals(XMLSurveyActivity.this.getString(R.string.btn_cancel))){
 					onBackPressed();
@@ -892,8 +900,9 @@ public class XMLSurveyActivity extends Activity {
     	try {
 			writeSurveyToFile(answerMap);
 			
-			if(autoTriggered)
+			if(autoTriggered) {
 				Utilities.getSP(this, Utilities.SP_REMINDER_INFO).edit().clear().commit();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -906,20 +915,21 @@ public class XMLSurveyActivity extends Activity {
 
 	//java 1.6 style...
 	private int getSurveyType(){
-		if(surveyName.equals(Utilities.SV_NAME_MORNING))
+		if(surveyName.equals(Utilities.SV_NAME_MORNING)) {
 			return 1;
-		else if(surveyName.equals(Utilities.SV_NAME_DRINKING))
+		} else if(surveyName.equals(Utilities.SV_NAME_DRINKING)) {
 			return 2;
-		else if(surveyName.equals(Utilities.SV_NAME_MOOD))
+		} else if(surveyName.equals(Utilities.SV_NAME_MOOD)) {
 			return 3;
-		else if(surveyName.equals(Utilities.SV_NAME_CRAVING))
+		} else if(surveyName.equals(Utilities.SV_NAME_CRAVING)) {
 			return 4;
-		else if(surveyName.equals(Utilities.SV_NAME_RANDOM))
+		} else if(surveyName.equals(Utilities.SV_NAME_RANDOM)) {
 			return 5;
-		else if(surveyName.equals(Utilities.SV_NAME_FOLLOWUP))
+		} else if(surveyName.equals(Utilities.SV_NAME_FOLLOWUP)) {
 			return 6;
-		else
+		} else {
 			return -1;
+		}
 	}
 	
 	private String getScheduleTimeStamp(){
@@ -938,8 +948,9 @@ public class XMLSurveyActivity extends Activity {
 			//sequence
 			String triggerSeq = Utilities.SP_KEY_TRIGGER_SEQ_MAP.get(surveyName);
 			int seq = shp.getInt(triggerSeq, 1);
-			if(seq == 0)
+			if(seq == 0) {
 				seq = Utilities.MAX_TRIGGER_MAP.get(surveyName);
+			}
 
 			
 			//for morning survey
@@ -963,9 +974,9 @@ public class XMLSurveyActivity extends Activity {
 				
 //				return Utilities.sdf.format(Utilities.getDefaultMorningCal(this).getTimeInMillis());
 				return Utilities.sdf.format(Utilities.getSP(this, Utilities.SP_BED_TIME).getLong(Utilities.SP_KEY_BED_TIME_LONG, defTime));
-			}
-			else
+			} else {
 				return scheduleTS;
+			}
 			
 		}
 			
@@ -980,9 +991,9 @@ public class XMLSurveyActivity extends Activity {
 		if(autoTriggered){
 			SharedPreferences sp = Utilities.getSP(context, Utilities.SP_REMINDER_INFO);
 			return sp.getString(Utilities.SP_KEY_REMINDER_INFO_1, "")+","+sp.getString(Utilities.SP_KEY_REMINDER_INFO_2, "")+","+sp.getString(Utilities.SP_KEY_REMINDER_INFO_3, "");
-		}
-		else
+		} else {
 			return ""+","+""+","+"";
+		}
 		
 	}
 	
@@ -1029,10 +1040,14 @@ public class XMLSurveyActivity extends Activity {
 			else{
 				for(int j = 0; j < data.size(); j++){
 					sb.append(data.get(j));
-					if(i != data.size()-1)sb.append("");
+					if(i != data.size()-1) {
+						sb.append("");
+					}
 				}
 			}
-			if(i != sorted.size()-1) sb.append(",");
+			if(i != sorted.size()-1) {
+				sb.append(",");
+			}
 		}
 		
 		//Ricky 2014/4/1
@@ -1061,9 +1076,9 @@ public class XMLSurveyActivity extends Activity {
 		try {
 			ensb = Utilities.encryption(sb.toString());
 			
-			if(Utilities.WRITE_RAW) 
+			if(Utilities.WRITE_RAW) {
 				Utilities.writeToFile(file_name, sb.toString());
-       	 	else{
+			} else{
        	 		Utilities.writeToFileEnc(file_name, ensb);
        	 	}
 			
@@ -1165,7 +1180,8 @@ public class XMLSurveyActivity extends Activity {
 		.setNegativeButton(android.R.string.cancel, null)
 		.setPositiveButton(android.R.string.ok, new android.content.DialogInterface.OnClickListener() {
 		
-		    public void onClick(DialogInterface arg0, int arg1) {
+		    @Override
+			public void onClick(DialogInterface arg0, int arg1) {
 		    	XMLSurveyActivity.super.onBackPressed();
 		    }
 		}).create().show();
@@ -1219,8 +1235,9 @@ public class XMLSurveyActivity extends Activity {
 		super.onPause();
 		Utilities.Log_sys(TAG, "onPause");
 		soundp.stop(streamID);
-		if(wl.isHeld())
+		if(wl.isHeld()) {
 			wl.release();
+		}
 	}
 
 	@Override

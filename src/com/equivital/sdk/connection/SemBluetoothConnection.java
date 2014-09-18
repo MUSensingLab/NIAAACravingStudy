@@ -8,21 +8,12 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.Vector;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.MediaPlayer;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.SystemClock;
-import android.os.Vibrator;
 import android.util.Log;
 
 import com.equivital.sdk.ISemConnection;
@@ -74,17 +65,23 @@ public class SemBluetoothConnection implements ISemConnection
 	/**
 	 * Adds an event listener
 	 */
+	@Override
 	public void addEventHandler(ISemConnectionEvents eventHandler)
 	{
-		if(!_eventHandlers.contains(eventHandler)) _eventHandlers.add(eventHandler);
+		if(!_eventHandlers.contains(eventHandler)) {
+			_eventHandlers.add(eventHandler);
+		}
 	}
 
 	/**
 	 * Removes an event handler.
 	 */
+	@Override
 	public void removeEventHandler(ISemConnectionEvents eventHandler)
 	{
-		if(_eventHandlers.contains(eventHandler)) _eventHandlers.remove(eventHandler);
+		if(_eventHandlers.contains(eventHandler)) {
+			_eventHandlers.remove(eventHandler);
+		}
 	}
 
 	/**
@@ -92,7 +89,9 @@ public class SemBluetoothConnection implements ISemConnection
 	 */
 	public void addBTEventHandler(ISemBluetoothConnectionEvents eventHandler)
 	{
-		if(!_eventHandlersBT.contains(eventHandler)) _eventHandlersBT.add(eventHandler);
+		if(!_eventHandlersBT.contains(eventHandler)) {
+			_eventHandlersBT.add(eventHandler);
+		}
 	}
 
 	/**
@@ -100,7 +99,9 @@ public class SemBluetoothConnection implements ISemConnection
 	 */
 	public void removeBTEventHandler(ISemBluetoothConnectionEvents eventHandler)
 	{
-		if(_eventHandlersBT.contains(eventHandler)) _eventHandlersBT.remove(eventHandler);
+		if(_eventHandlersBT.contains(eventHandler)) {
+			_eventHandlersBT.remove(eventHandler);
+		}
 	}
 
 	
@@ -195,7 +196,9 @@ public class SemBluetoothConnection implements ISemConnection
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         
-        if(address != null) connectToDeviceWithAddress(address);
+        if(address != null) {
+			connectToDeviceWithAddress(address);
+		}
         
 	}	
 	
@@ -208,7 +211,9 @@ public class SemBluetoothConnection implements ISemConnection
 		if(mState == STATE_NONE || mState == STATE_RECONNECTING )
 		{
 			_portAddress = address;
-			if(address != null) connectToDeviceWithAddress(address);
+			if(address != null) {
+				connectToDeviceWithAddress(address);
+			}
 		}
 	}
 	
@@ -227,6 +232,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @return A connection manager instance (or null if the connection is unmanaged)
 	 */
 	
+	@Override
 	public ISemConnectionManager getManager()
 	{
 		return null;
@@ -237,6 +243,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @return The connection string.
 	 */
 	
+	@Override
 	public String getConnectionInfo()
 	{
 		return "Bluetooth Port [" + _portAddress + "]";
@@ -247,6 +254,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @return True if a device is connected.
 	 */
 	
+	@Override
 	public boolean isConnected()
 	{
 		return isSocketConnected();
@@ -276,9 +284,12 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @return True if successful.
 	 */
 	
+	@Override
 	public boolean write(byte[] dataToWrite)
 	{
-		if(mState == STATE_NONE) return false;
+		if(mState == STATE_NONE) {
+			return false;
+		}
 		
 		writeData(dataToWrite, dataToWrite.length);
 		return true;
@@ -290,6 +301,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @return True if successful. 
 	 */
 	
+	@Override
 	public boolean write(String dataToWrite)
 	{
 		return write(dataToWrite.getBytes());
@@ -299,9 +311,12 @@ public class SemBluetoothConnection implements ISemConnection
 	 * Closes the underlying bluetooth connection.
 	 */
 	
+	@Override
 	public void close()
 	{
-		if(mState != STATE_NONE) disconnect();
+		if(mState != STATE_NONE) {
+			disconnect();
+		}
 	}
 	
     
@@ -543,7 +558,8 @@ public class SemBluetoothConnection implements ISemConnection
             mmSocket = tmp;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             setName("ConnectThread");
 
@@ -633,9 +649,12 @@ public class SemBluetoothConnection implements ISemConnection
 
         volatile boolean sentinel = false;
        
-        public void run()
+        @Override
+		public void run()
         {
-        	if(!isValidDevice()) return;
+        	if(!isValidDevice()) {
+				return;
+			}
         	
             connectionSucceeded();
             
@@ -656,7 +675,9 @@ public class SemBluetoothConnection implements ISemConnection
 	                
                     try
                     {
-                    	if(length < maxBufSize) Thread.sleep(50);
+                    	if(length < maxBufSize) {
+							Thread.sleep(50);
+						}
                     }
                     catch(Exception e)
                     {

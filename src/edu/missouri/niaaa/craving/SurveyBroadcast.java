@@ -2,9 +2,6 @@ package edu.missouri.niaaa.craving;
 
 import java.util.Calendar;
 
-import edu.missouri.niaaa.craving.location.LocationBroadcast;
-import edu.missouri.niaaa.craving.location.LocationUtilities;
-import edu.missouri.niaaa.craving.survey.XMLSurveyActivity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -13,10 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.PowerManager;
-import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
+import edu.missouri.niaaa.craving.location.LocationUtilities;
+import edu.missouri.niaaa.craving.survey.XMLSurveyActivity;
 
 public class SurveyBroadcast extends BroadcastReceiver {
 
@@ -26,7 +25,6 @@ public class SurveyBroadcast extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 		Utilities.Log_sys(TAG, "broadcast on receive"+intent.getAction());
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		

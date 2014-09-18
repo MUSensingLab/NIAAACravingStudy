@@ -14,11 +14,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -34,11 +32,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.google.android.gms.location.DetectedActivity;
-
-import edu.missouri.niaaa.craving.location.ActivityRecognitionService;
-import edu.missouri.niaaa.craving.location.LocationBroadcast;
-import edu.missouri.niaaa.craving.location.LocationUtilities;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,8 +41,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -57,6 +48,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.gms.location.DetectedActivity;
+
+import edu.missouri.niaaa.craving.location.ActivityRecognitionService;
+import edu.missouri.niaaa.craving.location.LocationBroadcast;
+import edu.missouri.niaaa.craving.location.LocationUtilities;
 
 public class Utilities {
 	
@@ -378,8 +375,9 @@ public class Utilities {
 		
 		Intent scheduleIntent = new Intent(Utilities.BD_ACTION_SCHEDULE_RANDOM);
 		scheduleIntent.putExtra(Utilities.SV_NAME, Utilities.SV_NAME_RANDOM);
-		if(!fromNoon)
-		context.sendBroadcast(scheduleIntent);
+		if(!fromNoon) {
+			context.sendBroadcast(scheduleIntent);
+		}
 	}
 	
 	
@@ -529,8 +527,9 @@ public class Utilities {
 		
 		int today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 		
-		if(day == today)
+		if(day == today) {
 			return true;
+		}
 		return false;
 	}
 	
@@ -683,18 +682,21 @@ public class Utilities {
 	
 	
 	public static void Log_sys(String s1, String s2){
-		if(debug_system)
+		if(debug_system) {
 			Log.d(s1,s2);
+		}
 	}
 	
 	public static void Log(String s1, String s2){
-		if(debug)
+		if(debug) {
 			Log.d(s1,s2);
+		}
 	}
 	
 	public static void LogB(String s1, String s2){
-		if(debugB)
+		if(debugB) {
 			Log.d(s1,s2);
+		}
 	}
 	
 	public static String getPWD(Context context){// need modify
@@ -872,6 +874,7 @@ public class Utilities {
 		builder.setTitle(R.string.pin_title);
 		builder.setView(DialogView);  
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				
 				EditText pinEdite = (EditText) DialogView.findViewById(R.id.pin_edit);
@@ -897,7 +900,8 @@ public class Utilities {
 		});
 		
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int whichButton) {  
+		    @Override
+			public void onClick(DialogInterface dialog, int whichButton) {  
 		    	
 		    	
 		    }  
@@ -1102,8 +1106,9 @@ public class Utilities {
 	
 	public static void writeToFile(String fileName, String toWrite) throws IOException{
 		File dir =new File(PHONE_BASE_PATH); 
-		if(!dir.exists())
+		if(!dir.exists()) {
 			dir.mkdirs();
+		}
 		File f = new File(PHONE_BASE_PATH,fileName);
 		FileWriter fw = new FileWriter(f, true);
 		fw.write(toWrite+'\n');		
@@ -1115,8 +1120,9 @@ public class Utilities {
 	public static void writeToFileEnc(String fileName, String toWrite) throws IOException{
 		Utilities.Log("write to file", "enc");
 		File dir =new File(PHONE_BASE_PATH); 
-		if(!dir.exists())
+		if(!dir.exists()) {
 			dir.mkdirs();
+		}
 		File f = new File(PHONE_BASE_PATH,fileName);
 		FileWriter fw = new FileWriter(f, true);
 		fw.write(toWrite);		

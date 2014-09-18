@@ -29,6 +29,7 @@ public class CheckQuestion extends SurveyQuestion{
 	}
 	
 /*	function*/
+	@Override
 	public LinearLayout prepareLayout(Context c) {
 		
 		//LinearLayout
@@ -67,6 +68,7 @@ public class CheckQuestion extends SurveyQuestion{
 			answerViews.put(check, ans);
 			check.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 				
+				@Override
 				public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
 					Answer a = answerViews.get(buttonView);
 //					Log.d("final check", "answer text is "+a.getAnswerText()+" "+"answer getskip is "+a.getSkip());
@@ -115,6 +117,7 @@ public class CheckQuestion extends SurveyQuestion{
 	}
 
 	
+	@Override
 	public boolean validateSubmit() {
 		boolean b = false;
 		for(Answer answer: answers){
@@ -123,19 +126,23 @@ public class CheckQuestion extends SurveyQuestion{
 		return b;
 	}
 	
+	@Override
 	public String getSkip(){
 		return skipTo;
 	}
 	
+	@Override
 	public ArrayList<String> getSelectedAnswers(){
 		ArrayList<String> temp = new ArrayList<String>();
 		for(Answer answer: answers){
-			if(answer.isSelected())
+			if(answer.isSelected()) {
 				temp.add(answer.getId());
+			}
 		}
 		return temp;
 	}
 	
+	@Override
 	public boolean clearSelectedAnswers(){
 //		Log.d("final 3", "clear");
 //		answers = null;

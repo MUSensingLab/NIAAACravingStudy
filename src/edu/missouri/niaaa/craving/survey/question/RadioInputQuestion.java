@@ -2,20 +2,20 @@ package edu.missouri.niaaa.craving.survey.question;
 
 import java.util.ArrayList;
 
-import edu.missouri.niaaa.craving.survey.category.Answer;
-import edu.missouri.niaaa.craving.survey.category.QuestionType;
-import edu.missouri.niaaa.craving.survey.category.SurveyQuestion;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+import edu.missouri.niaaa.craving.survey.category.Answer;
+import edu.missouri.niaaa.craving.survey.category.QuestionType;
+import edu.missouri.niaaa.craving.survey.category.SurveyQuestion;
 
 public class RadioInputQuestion extends SurveyQuestion{
 	
@@ -30,6 +30,7 @@ public class RadioInputQuestion extends SurveyQuestion{
 	}
 	
 	
+	@Override
 	public ArrayList<String> getSelectedAnswers() {
 		ArrayList<String> temp = new ArrayList<String>();
 		temp.add(selectedAnswer.getId()+"/"+selectedText);
@@ -37,6 +38,7 @@ public class RadioInputQuestion extends SurveyQuestion{
 	}
 
 	
+	@Override
 	public LinearLayout prepareLayout(Context c) {
 		
 		LinearLayout layout = new LinearLayout(c);
@@ -65,11 +67,14 @@ public class RadioInputQuestion extends SurveyQuestion{
 		editText.setEnabled(false);
 		editText.addTextChangedListener(new TextWatcher(){
 			
+			@Override
 			public void afterTextChanged(Editable arg0) {
 				selectedText = arg0.toString();
 			}
 			
+			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
+			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }	
 		});
 		
@@ -91,10 +96,13 @@ public class RadioInputQuestion extends SurveyQuestion{
 			
 			temp.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 				
+				@Override
 				public void onCheckedChanged(CompoundButton buttonView,
 						boolean isChecked) {
 					if(isChecked){
-						if(selectedAnswer != null) selectedAnswer.setSelected(false);
+						if(selectedAnswer != null) {
+							selectedAnswer.setSelected(false);
+						}
 						Answer selected = answerViews.get(buttonView);
 						selected.setSelected(true);
 						selectedAnswer = selected;
@@ -124,12 +132,16 @@ public class RadioInputQuestion extends SurveyQuestion{
 	}
 
 	
+	@Override
 	public String getSkip() {
 		return skipTo;
 	}
 	
+	@Override
 	public boolean validateSubmit() {
-		if(selectedAnswer == null) return false;
+		if(selectedAnswer == null) {
+			return false;
+		}
 		boolean extraInput = selectedAnswer.getExtraInput();
 		if((!extraInput) || (extraInput && selectedText.length() > 0)){
 			return true;
@@ -137,6 +149,7 @@ public class RadioInputQuestion extends SurveyQuestion{
 		return false;
 	}
 
+	@Override
 	public boolean clearSelectedAnswers(){
 //		answers = null;
 //		answered = false;

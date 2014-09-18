@@ -3,8 +3,6 @@ package edu.missouri.niaaa.craving.survey.category;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public interface Category {
 	
 	public Question nextQuestion();

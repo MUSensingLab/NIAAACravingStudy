@@ -2,11 +2,6 @@ package edu.missouri.niaaa.craving.sensor;
 
 
 
-import com.equivital.sdk.connection.SemBluetoothConnection;
-
-import edu.missouri.niaaa.craving.MainActivity;
-import edu.missouri.niaaa.craving.R;
-import edu.missouri.niaaa.craving.services.SensorLocationService;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -21,6 +16,11 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.equivital.sdk.connection.SemBluetoothConnection;
+
+import edu.missouri.niaaa.craving.R;
+import edu.missouri.niaaa.craving.services.SensorLocationService;
 
 
 public class SensorConnections extends Activity {
@@ -118,6 +118,7 @@ public class SensorConnections extends Activity {
 	}
 	
 	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult " + requestCode+" "+resultCode);
         

@@ -3,9 +3,6 @@ package edu.missouri.niaaa.craving.survey.question;
 import java.util.ArrayList;
 import java.util.Map;
 
-import edu.missouri.niaaa.craving.survey.category.Answer;
-import edu.missouri.niaaa.craving.survey.category.QuestionType;
-import edu.missouri.niaaa.craving.survey.category.SurveyQuestion;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,11 +10,14 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import edu.missouri.niaaa.craving.survey.category.Answer;
+import edu.missouri.niaaa.craving.survey.category.QuestionType;
+import edu.missouri.niaaa.craving.survey.category.SurveyQuestion;
 
 public class RadioQuestion extends SurveyQuestion {
 	
@@ -33,6 +33,7 @@ public class RadioQuestion extends SurveyQuestion {
 	
 	
 /*	function*/
+	@Override
 	public LinearLayout prepareLayout(final Context c) {
 		
 		//Linearlayout
@@ -72,6 +73,7 @@ public class RadioQuestion extends SurveyQuestion {
 			answerViews.put(radio, ans);
 			radio.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 				
+				@Override
 				public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
 					Answer a = answerViews.get(buttonView);
 					
@@ -131,23 +133,28 @@ public class RadioQuestion extends SurveyQuestion {
 	}
 
 	
+	@Override
 	public boolean validateSubmit() {
 		return answered;
 	}
 
+	@Override
 	public String getSkip(){
 		return skipTo;
 	}
 	
+	@Override
 	public ArrayList<String> getSelectedAnswers(){
 		ArrayList<String> temp = new ArrayList<String>();
 		for(Answer answer: answers){
-			if(answer.isSelected())
+			if(answer.isSelected()) {
 				temp.add(answer.getId());
+			}
 		}
 		return temp;
 	}
 	
+	@Override
 	public boolean clearSelectedAnswers(){
 //		Log.d("final 3", "clear");
 //		answers. = null;

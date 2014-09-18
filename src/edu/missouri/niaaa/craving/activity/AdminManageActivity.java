@@ -30,9 +30,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import edu.missouri.niaaa.craving.MainActivity;
-import edu.missouri.niaaa.craving.R;
-import edu.missouri.niaaa.craving.Utilities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,6 +51,8 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.missouri.niaaa.craving.R;
+import edu.missouri.niaaa.craving.Utilities;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -141,6 +140,7 @@ public class AdminManageActivity extends TabActivity {
 		builder.setTitle(R.string.admin_set_title);
 		builder.setView(textEntryView);  
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				
 				EditText pinEdite = (EditText) textEntryView.findViewById(R.id.pin_edit);
@@ -210,7 +210,8 @@ public class AdminManageActivity extends TabActivity {
 		});
 		
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int whichButton) {  
+		    @Override
+			public void onClick(DialogInterface dialog, int whichButton) {  
 		    	
 		    	imm.toggleSoftInput(0, InputMethodManager.RESULT_SHOWN);
 		    	imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
@@ -452,7 +453,8 @@ public class AdminManageActivity extends TabActivity {
         builder.setTitle(R.string.assign_confirm_title);  
         builder.setMessage(str);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {  
-        	public void onClick(DialogInterface dialog, int whichButton) {  
+        	@Override
+			public void onClick(DialogInterface dialog, int whichButton) {  
         		setHints();
         	}  
         });   
@@ -473,6 +475,7 @@ public class AdminManageActivity extends TabActivity {
         builder.setTitle(R.string.assign_confirm_title);  
         builder.setMessage(str);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {  
+			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {  
 				editor.putString(Utilities.SP_KEY_LOGIN_USERID, asID.getText().toString());
 				Log.d("here!!!", "id is "+asID.getText().toString());

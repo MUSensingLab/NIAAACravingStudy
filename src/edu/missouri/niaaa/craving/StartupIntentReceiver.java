@@ -13,7 +13,6 @@ public class StartupIntentReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 		final Context t = context;
 		Intent s = new Intent(context,MainActivity.class);
 		s.setAction(action);

@@ -18,7 +18,6 @@ package edu.missouri.niaaa.craving.sensor;
 
 import java.util.Set;
 
-import edu.missouri.niaaa.craving.R;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -27,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -37,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import edu.missouri.niaaa.craving.R;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -70,7 +69,8 @@ public class DeviceListActivity extends Activity {
         // Initialize the button to perform device discovery
         Button scanButton = (Button) findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 doDiscovery();
                 v.setVisibility(View.GONE);
             }
@@ -153,7 +153,8 @@ public class DeviceListActivity extends Activity {
 
     // The on-click listener for all devices in the ListViews
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+        @Override
+		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 
             if(((TextView) v).getText().length() >= 17){
             	// Cancel discovery because it's costly and we're about to connect

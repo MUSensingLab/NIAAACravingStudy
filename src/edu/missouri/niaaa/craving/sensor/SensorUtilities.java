@@ -1,8 +1,5 @@
 package edu.missouri.niaaa.craving.sensor;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 
 public class SensorUtilities {
 
@@ -11,7 +8,6 @@ public class SensorUtilities {
 	public static final int INTENT_CONNECT_SENSOR = 1;
 	public static final int SENSOR_STATE_CHANGE = 2;
 	public final static int INTENT_REQUEST_BLUETOOTH = 3;
-	
 	
 /*	broadcast*/
 	public static final String ACTION_CONNECT_SENSOR = "edu.missouri.niaaa.craving.CONNECT_SENSOR";

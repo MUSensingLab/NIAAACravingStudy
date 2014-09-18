@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Calendar;
 
-import edu.missouri.niaaa.craving.R;
-import edu.missouri.niaaa.craving.Utilities;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +16,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.widget.TimePicker.OnTimeChangedListener;
+import android.widget.Toast;
+import edu.missouri.niaaa.craving.R;
+import edu.missouri.niaaa.craving.Utilities;
 
 public class MorningScheduler extends Activity {
 	

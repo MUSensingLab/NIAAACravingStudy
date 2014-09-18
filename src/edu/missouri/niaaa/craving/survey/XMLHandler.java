@@ -8,6 +8,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.content.Context;
 import edu.missouri.niaaa.craving.survey.category.Answer;
 import edu.missouri.niaaa.craving.survey.category.Category;
 import edu.missouri.niaaa.craving.survey.category.Question;
@@ -20,7 +21,6 @@ import edu.missouri.niaaa.craving.survey.question.NumberQuestion;
 import edu.missouri.niaaa.craving.survey.question.RadioInputQuestion;
 import edu.missouri.niaaa.craving.survey.question.RadioQuestion;
 import edu.missouri.niaaa.craving.survey.question.TextQuestion;
-import android.content.Context;
 
 /* Author: Paul Baskett
  * Last Update: 9/25/2012
@@ -115,10 +115,11 @@ public class XMLHandler extends DefaultHandler {
 		this.appContext = c;
 		this.external = allowExternalXML;
 		
-		if(baseId != null)
+		if(baseId != null) {
 			this.baseId = baseId;
-		else 
+		} else {
 			this.baseId = "";
+		}
 	}
 	
 	/*
@@ -174,14 +175,17 @@ public class XMLHandler extends DefaultHandler {
 			 * so null strings don't cause null
 			 * pointer exceptions when used.
 			 */
-			if(s == null) s = "invalid";
+			if(s == null) {
+				s = "invalid";
+			}
 			
 			//Get baseId
 			String id = baseId;
 			
 			//Make sure it's valid for operations
-			if(attr.getValue("id") != null)
+			if(attr.getValue("id") != null) {
 				id += attr.getValue("id");
+			}
 			
 			/*
 			 * Create appropriate question type, default
@@ -403,9 +407,9 @@ public class XMLHandler extends DefaultHandler {
 		else if(localName.equals("answer")){
 			answer.setAnswerText(buffer.toString());
 			//in a question
-			if(listAnswerBlock == null)
+			if(listAnswerBlock == null) {
 				question.addAnswer(answer);
-			else{//in a questionBlock
+			} else{//in a questionBlock
 				//Log.d(TAG,"Finished question block answer list, length: "+blockAnswerList.size());
 				listAnswerBlock.add(answer);
 			}
