@@ -28,14 +28,16 @@ import android.util.Log;
 import android.widget.Toast;
 import edu.missouri.niaaa.craving.R;
 import edu.missouri.niaaa.craving.Utilities;
+import edu.missouri.niaaa.craving.logger.Logger;
 import edu.missouri.niaaa.craving.sensor.SensorUtilities;
 import edu.missouri.niaaa.craving.sensor.equivital.EquivitalRunnable;
 import edu.missouri.niaaa.craving.sensor.internal.InternalRunnable;
 
+
 public class SensorLocationService extends Service {
 
 	String TAG = "SensorLocationService";
-
+	private final Logger log = Logger.getLogger(SensorLocationService.class);
 	PowerManager mPowerManager;
 	WakeLock serviceWakeLock;
 
@@ -47,7 +49,7 @@ public class SensorLocationService extends Service {
 	public static boolean cancelBlueToothFlag = false;
 	public static Context serviceContext;
 
-	/*	sensor*/
+	/* sensor */
 	private SoundPool mSoundP;
 	private HashMap<Integer, Integer> soundsMap;
 	Timer soundTimer;
@@ -55,7 +57,6 @@ public class SensorLocationService extends Service {
 	int soundStreamID;
 	int voiceStreamID;
 	public static boolean mIsRunning = false;
-
 
 	@SuppressLint("UseSparseArrays")
 	@Override
@@ -70,7 +71,8 @@ public class SensorLocationService extends Service {
 
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-		serviceWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK , "SensorServiceLock");
+		serviceWakeLock = mPowerManager.newWakeLock(
+				PowerManager.PARTIAL_WAKE_LOCK, "SensorServiceLock");
 		serviceWakeLock.acquire();
 
 		mSoundP = new SoundPool(2, AudioManager.STREAM_MUSIC, 100);
@@ -78,16 +80,14 @@ public class SensorLocationService extends Service {
 		soundsMap.put(1, mSoundP.load(this, R.raw.alarm_sound, 1));
 		soundsMap.put(2, mSoundP.load(this, R.raw.voice_sound, 1));
 
-
 		IntentFilter sensorIntent = new IntentFilter();
 		sensorIntent.addAction(SensorUtilities.ACTION_CONNECT_SENSOR);
 		sensorIntent.addAction(SensorUtilities.ACTION_DISCONNECT_SENSOR);
 		sensorIntent.addAction(SensorUtilities.ACTION_LOST_CONNECTION_SOUND);
-		this.registerReceiver(SensorReceiver,sensorIntent);
+		this.registerReceiver(SensorReceiver, sensorIntent);
 
-
-//		IntentFilter locationIntent = new IntentFilter();
-//		locationIntent.addAction(LocationUtilities.ACTION_START_LOCATION);
+		// IntentFilter locationIntent = new IntentFilter();
+		// locationIntent.addAction(LocationUtilities.ACTION_START_LOCATION);
 	}
 
 	@Override
@@ -114,14 +114,12 @@ public class SensorLocationService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		Utilities.Log_sys(TAG, "Service OnBind");
 		return new MyBinder();
 	}
-
 
 	@Override
 	public boolean onUnbind(Intent intent) {
@@ -130,19 +128,17 @@ public class SensorLocationService extends Service {
 		return super.onUnbind(intent);
 	}
 
-
-/*	mBinder*/
-	public class MyBinder extends Binder{
-		public SensorLocationService getService(){
+	/* mBinder */
+	public class MyBinder extends Binder {
+		public SensorLocationService getService() {
 			return SensorLocationService.this;
 		}
 	}
 
-
-
-/*	write to file*/
+	/* write to file */
 	public static boolean checkDataConnectivity() {
-		ConnectivityManager connectivity = (ConnectivityManager) serviceContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivity = (ConnectivityManager) serviceContext
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivity != null) {
 			NetworkInfo[] info = connectivity.getAllNetworkInfo();
 			if (info != null) {
@@ -156,68 +152,80 @@ public class SensorLocationService extends Service {
 		return false;
 	}
 
-
-
-/*	sensor broadcast receiver*/
-
+	/* sensor broadcast receiver */
 
 	BroadcastReceiver SensorReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
 			String action = intent.getAction();
-			Log.d(TAG,"sensor receiver action "+ action);
+			Log.d(TAG, "sensor receiver action " + action);
 
-			if(action.equals(SensorUtilities.ACTION_CONNECT_SENSOR)){
+			if (action.equals(SensorUtilities.ACTION_CONNECT_SENSOR)) {
 
-				Toast.makeText(getApplicationContext(), R.string.sensor_connect, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),
+						R.string.sensor_connect, Toast.LENGTH_LONG).show();
 
-				String address=intent.getStringExtra(SensorUtilities.KEY_ADDRESS);
-				String deviceName=intent.getStringExtra(SensorUtilities.KEY_DEVICE_NAME);
+				String address = intent
+						.getStringExtra(SensorUtilities.KEY_ADDRESS);
+				String deviceName = intent
+						.getStringExtra(SensorUtilities.KEY_DEVICE_NAME);
 
-
-				String userID = Utilities.getSP(context, Utilities.SP_LOGIN).getString(Utilities.SP_KEY_LOGIN_USERID, "0000");
+				String userID = Utilities.getSP(context, Utilities.SP_LOGIN)
+						.getString(Utilities.SP_KEY_LOGIN_USERID, "0000");
 
 				cancelBlueToothFlag = false;
-				equivitalThread = new EquivitalRunnable(address,deviceName, userID);
+				equivitalThread = EquivitalRunnable.getInstance(address,
+						deviceName,
+						userID);
 				equivitalThread.run();
-				accelermetorThread = new InternalRunnable(mSensorManager,
+				accelermetorThread = InternalRunnable.getInstance(
+						mSensorManager,
 						Sensor.TYPE_ACCELEROMETER,
 						SensorManager.SENSOR_DELAY_NORMAL, userID);
 				accelermetorThread.run();
 
-//				Calendar c=Calendar.getInstance();
-//				SimpleDateFormat curFormater = new SimpleDateFormat("MMMMM_dd");
-//				String dateObj =curFormater.format(c.getTime());
-//				String file_name="Mac_Address"+dateObj+".txt";
-//		        File f = new File(BASE_PATH,file_name);
-//
-//				if(f != null){
-//					try {
-//						writeToFile(f, address);
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
+				// Calendar c=Calendar.getInstance();
+				// SimpleDateFormat curFormater = new
+				// SimpleDateFormat("MMMMM_dd");
+				// String dateObj =curFormater.format(c.getTime());
+				// String file_name="Mac_Address"+dateObj+".txt";
+				// File f = new File(BASE_PATH,file_name);
+				//
+				// if(f != null){
+				// try {
+				// writeToFile(f, address);
+				// } catch (IOException e) {
+				// e.printStackTrace();
+				// }
+				// }
 
-				SharedPreferences sp = getSharedPreferences(Utilities.SP_LOGIN, Context.MODE_PRIVATE);
-				if(!sp.contains(Utilities.SP_KEY_SENSOR_CONN_TS)){
-					sp.edit().putLong(Utilities.SP_KEY_SENSOR_CONN_TS, Calendar.getInstance().getTimeInMillis()).commit();
+				SharedPreferences sp = getSharedPreferences(Utilities.SP_LOGIN,
+						Context.MODE_PRIVATE);
+				if (!sp.contains(Utilities.SP_KEY_SENSOR_CONN_TS)) {
+					sp.edit()
+							.putLong(Utilities.SP_KEY_SENSOR_CONN_TS,
+									Calendar.getInstance().getTimeInMillis())
+							.commit();
 				}
 
 			}
 
-			//hard reset
-			else if(action.equals(SensorUtilities.ACTION_DISCONNECT_SENSOR)){
+			// hard reset
+			else if (action.equals(SensorUtilities.ACTION_DISCONNECT_SENSOR)) {
+				log.d("action received: "
+						+ SensorUtilities.ACTION_DISCONNECT_SENSOR);
 				stopInternalThread(accelermetorThread);
 				stopEquivitalThread();
 				stopSound();
 			}
 
-			else if(action.equals(SensorUtilities.ACTION_LOST_CONNECTION_SOUND)){
+			else if (action
+					.equals(SensorUtilities.ACTION_LOST_CONNECTION_SOUND)) {
 
-				//sound alert that bluetooth connection is lost, check to connect again
-				Log.d(TAG, "sensor connection is lost, sound should come off");
+				// sound alert that bluetooth connection is lost, check to
+				// connect again
+				log.d("Sensor connection is lost, sound should come off");
 				playSound();
 				writeSensorConn();
 			}
@@ -225,35 +233,41 @@ public class SensorLocationService extends Service {
 
 	};
 
-
-	private void stopEquivitalThread(){
-
-		if(equivitalThread != null){
+	private void stopEquivitalThread() {
+		log.d("stopEquivitalThread(): called");
+		if (equivitalThread != null) {
 			equivitalThread.stop();
+			log.d("stopEquivitalThread(): stop()");
 		}
 		writeSensorConn();
 	}
 
 	private void stopInternalThread(InternalRunnable internalThread) {
+		log.d("stopInternalThread(): called");
 		if (internalThread != null) {
 			internalThread.stop();
+			log.d("stopInternalThread(): stop()");
 		}
 		// TODO: is writeSensorConn() needed here; need Chen's reply
+		// TODO: Whether need to upload to server
 	}
 
-	private void writeSensorConn(){
+	private void writeSensorConn() {
 
-		if(!cancelBlueToothFlag){
-			//write to server
+		if (!cancelBlueToothFlag) {
+			// write to server
 			Calendar c = Calendar.getInstance();
-			SharedPreferences sp = getSharedPreferences(Utilities.SP_LOGIN, Context.MODE_PRIVATE);
-			long startTimeStamp = sp.getLong(Utilities.SP_KEY_SENSOR_CONN_TS, c.getTimeInMillis());
+			SharedPreferences sp = getSharedPreferences(Utilities.SP_LOGIN,
+					Context.MODE_PRIVATE);
+			long startTimeStamp = sp.getLong(Utilities.SP_KEY_SENSOR_CONN_TS,
+					c.getTimeInMillis());
 			c.setTimeInMillis(startTimeStamp);
 
 			try {
 				Utilities.writeEventToFileAndUpload(this,
 						Utilities.CODE_SENSOR_CONN, "", "", "", "",
-						Utilities.sdf.format(c.getTime()), Utilities.sdf.format(Calendar.getInstance().getTime()));
+						Utilities.sdf.format(c.getTime()),
+						Utilities.sdf.format(Calendar.getInstance().getTime()));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -264,50 +278,48 @@ public class SensorLocationService extends Service {
 		cancelBlueToothFlag = true;
 	}
 
+	/* alarm sound for disconnection */
 
-/*	alarm sound for disconnection*/
-
-	private void playSound(){
-//		this.setVolumeControlStream(AudioManager.STREAM_ALARM);
+	private void playSound() {
+		// this.setVolumeControlStream(AudioManager.STREAM_ALARM);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		am.setStreamVolume(AudioManager.STREAM_MUSIC, Utilities.VOLUME, AudioManager.FLAG_PLAY_SOUND);
+		am.setStreamVolume(AudioManager.STREAM_MUSIC, Utilities.VOLUME,
+				AudioManager.FLAG_PLAY_SOUND);
 
 		soundTimer = new Timer();
 		voiceTimer = new Timer();
-		soundTimer.schedule(new StartSound(),3000);
-		voiceTimer.schedule(new StartVoice(),3000 + 20*1000);
+		soundTimer.schedule(new StartSound(), 3000);
+		voiceTimer.schedule(new StartVoice(), 3000 + 20 * 1000);
 
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(1000);
+		v.vibrate(1000);
 	}
 
-	private void stopSound(){
-		if(soundTimer != null) {
+	private void stopSound() {
+		if (soundTimer != null) {
 			soundTimer.cancel();
 		}
-		if(voiceTimer != null) {
+		if (voiceTimer != null) {
 			voiceTimer.cancel();
 		}
 		mSoundP.stop(soundStreamID);
 		mSoundP.stop(voiceStreamID);
 	}
 
+	private class StartSound extends TimerTask {
+		@Override
+		public void run() {
 
-    private class StartSound extends TimerTask {
-    	@Override
-    	public void run(){
+			soundStreamID = mSoundP.play(soundsMap.get(1), 1, 1, 1, 0, 1);
+		}
+	}
 
-    		soundStreamID = mSoundP.play(soundsMap.get(1), 1, 1, 1, 0, 1);
-    	}
-    }
+	private class StartVoice extends TimerTask {
+		@Override
+		public void run() {
 
-    private class StartVoice extends TimerTask {
-    	@Override
-    	public void run(){
-
-    		voiceStreamID = mSoundP.play(soundsMap.get(2), 1, 1, 1, 0, 1);
-    	}
-    }
-
+			voiceStreamID = mSoundP.play(soundsMap.get(2), 1, 1, 1, 0, 1);
+		}
+	}
 
 }

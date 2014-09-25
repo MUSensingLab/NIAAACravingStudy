@@ -7,15 +7,15 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class Logger implements Serializable {
 
-	static String tagSuffix;
+	String tagSuffix;
 
     private Logger(final String tagSuffix) {
         if (null == tagSuffix) {
             throw new IllegalArgumentException("The tag suffix cannot be null");
 		} else if (tagSuffix.length() > 23) {
-			Logger.tagSuffix = tagSuffix.substring(0, 22);
+			this.tagSuffix = tagSuffix.substring(0, 22);
 		} else {
-			Logger.tagSuffix = tagSuffix;
+			this.tagSuffix = tagSuffix;
 		}
     }
 
