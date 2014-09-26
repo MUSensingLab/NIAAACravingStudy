@@ -3,6 +3,7 @@ package edu.missouri.niaaa.craving.sensor.internal;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -111,28 +112,45 @@ public class InternalRunnable implements Runnable, SensorEventListener {
 					event.values[2]);
 			if (compressAccelerometerData(ResultAcc)) {
 				log.d("get avg Acc data");
+				DecimalFormat df = new DecimalFormat("#.00000");
+				String avgAccStr = df.format(avgAcc);
 				String Accelerometer_Values = getTimeStamp() + ","
-						+ String.valueOf(avgAcc);
+						+ String.valueOf(avgAccStr);
+				dataPoints.add(Accelerometer_Values + ";");
 				String file_name = "Accelerometer." + identifier + "."
-						+ getDate() + ".txt";
-				File f = new File(Utilities.PHONE_BASE_PATH, file_name);
-				/*
-				 * dataPoints.add(Accelerometer_Values+";");
-				 * if(dataPoints.size()==80) { List<String> subList =
-				 * dataPoints.subList(0,41); String data=subList.toString();
-				 * String formatedData=data.replaceAll("[\\[\\]]",""); //Ricky
-				 * 2013/12/09
-				 * //sendDatatoServer("Accelerometer."+identifier+"."+
-				 * getDate(),formatedData); TransmitData transmitData=new
-				 * TransmitData();
-				 * transmitData.execute("Accelerometer."+identifier
-				 * +"."+getDate(),formatedData); subList.clear(); }
-				 */
+						+ getDate();
+
+				String encDataToWrite = null;
 				try {
-					writeToFile(f, Accelerometer_Values);
-				} catch (IOException e) {
+					if (Utilities.WRITE_RAW) {
+						Utilities.writeToFile(file_name, Accelerometer_Values);
+					} else {
+						encDataToWrite = Utilities
+								.encryption(Accelerometer_Values);
+						Utilities.writeToFileEnc(file_name, encDataToWrite);
+					}
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				log.d("dataPoints'size: " + dataPoints.size());
+				if (dataPoints.size() == 57) {
+					List<String> subList = dataPoints.subList(0, 56);
+					String data = subList.toString();
+					String formattedData = data.replaceAll("[\\[\\]]", "");
+					String enformattedData = null;
+					try {
+						enformattedData = Utilities.encryption(formattedData);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					TransmitData transmitData = new TransmitData();
+					transmitData.execute(file_name, enformattedData);
+
+					log.d("Accelerometer Data Point Sent " + enformattedData);
+					subList.clear();
+					subList = null;
 				}
 			}
 		} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
@@ -161,7 +179,8 @@ public class InternalRunnable implements Runnable, SensorEventListener {
 	}
 
 	private double getOverallAcc(float xACC, float yACC, float zACC) {
-		return Math.sqrt(xACC * xACC + yACC * yACC + zACC * zACC);
+		return Math.sqrt(xACC * xACC + yACC * yACC + zACC * zACC)
+				- SensorManager.STANDARD_GRAVITY;
 	}
 
 	protected static void writeToFile(File f, String toWrite)

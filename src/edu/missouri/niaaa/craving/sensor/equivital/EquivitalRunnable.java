@@ -135,8 +135,7 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 				.getImpedanceQuality(), arg1.getSummary()
 				.getQualityConfidence().getHeartRateConfidence(), arg1
 				.getSummary().getQualityConfidence()
-				.getBreathingRateConfidence(), arg1.getSummary()
-				.getGalvanicSkinResistance());
+				.getBreathingRateConfidence());
 		// Log.d("Chest Acc Info","chest data recorded:");
 	}
 
@@ -144,7 +143,7 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 			double beltSensorRate, double ecgDerivedRate, double impedanceRate,
 			double ecgRate, double beltQuality, double ecgQuality,
 			double impedanceQuality, double heartRateConfidence,
-			double breathingRateConfidence, double GSR) {
+			double breathingRateConfidence) {
 		// TODO Auto-generated method stub
 		/*
 		 * 1/22 Ricky Reduce ecgDerivedRate,impedanceRate,impedanceQuality
@@ -166,8 +165,7 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 				+ String.valueOf(ecgRate) + "," + String.valueOf(beltQuality)
 				+ "," + String.valueOf(ecgQuality) + ","
 				+ String.valueOf(heartRateConfidence) + ","
-				+ String.valueOf(breathingRateConfidence) + ","
-				+ String.valueOf(GSR);
+				+ String.valueOf(breathingRateConfidence);
 		Message msgData = new Message();
 		msgData.what = CHEST_SENSOR_DATA;
 		Bundle dataBundle = new Bundle();

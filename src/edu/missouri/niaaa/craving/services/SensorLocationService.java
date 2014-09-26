@@ -182,7 +182,7 @@ public class SensorLocationService extends Service {
 				accelermetorThread = InternalRunnable.getInstance(
 						mSensorManager,
 						Sensor.TYPE_ACCELEROMETER,
-						SensorManager.SENSOR_DELAY_NORMAL, userID);
+						SensorManager.SENSOR_DELAY_GAME, userID);
 				accelermetorThread.run();
 
 				// Calendar c=Calendar.getInstance();
@@ -248,8 +248,6 @@ public class SensorLocationService extends Service {
 			internalThread.stop();
 			log.d("stopInternalThread(): stop()");
 		}
-		// TODO: is writeSensorConn() needed here; need Chen's reply
-		// TODO: Whether need to upload to server
 	}
 
 	private void writeSensorConn() {
