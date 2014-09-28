@@ -112,8 +112,9 @@ public class InternalRunnable implements Runnable, SensorEventListener {
 					event.values[2]);
 			if (compressAccelerometerData(ResultAcc)) {
 				log.d("get avg Acc data");
-				DecimalFormat df = new DecimalFormat("#.00000");
+				DecimalFormat df = new DecimalFormat("#0.00000");
 				String avgAccStr = df.format(avgAcc);
+				log.d(avgAccStr);
 				String Accelerometer_Values = getTimeStamp() + ","
 						+ String.valueOf(avgAccStr);
 				dataPoints.add(Accelerometer_Values + ";");
