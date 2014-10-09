@@ -28,7 +28,7 @@ import edu.missouri.niaaa.craving.services.SensorLocationService;
 
 
 /**
- * Implementation of the Equivital ISemConnection interface for the Android Bluetooth Stack 
+ * Implementation of the Equivital ISemConnection interface for the Android Bluetooth Stack
  * @author Steve Riggall, Hidalgo Limited.
  */
 public class SemBluetoothConnection implements ISemConnection
@@ -60,7 +60,7 @@ public class SemBluetoothConnection implements ISemConnection
     public static int reConnectCount=0;
     static Timer reConnectTimer;
     PendingIntent startReconnection;
-    
+
 
 	/**
 	 * Adds an event listener
@@ -104,19 +104,19 @@ public class SemBluetoothConnection implements ISemConnection
 		}
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	Vector<ISemConnectionEvents> getHandlers()
 	{
 		return (Vector<ISemConnectionEvents>)_eventHandlers.clone();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	Vector<ISemBluetoothConnectionEvents> getHandlersBT()
 	{
 		return (Vector<ISemBluetoothConnectionEvents>)_eventHandlersBT.clone();
 	}
-	
+
 	protected void fireDataReceivedEvent(SemDataReceivedEventArgs args)
 	{
 		if(_eventHandlers.size() > 0)
@@ -138,7 +138,7 @@ public class SemBluetoothConnection implements ISemConnection
 			}
 		}
 	}
-	
+
 	protected void fireConnectionFailedEvent(IOException e)
 	{
 		if(_eventHandlersBT.size() > 0)
@@ -150,7 +150,7 @@ public class SemBluetoothConnection implements ISemConnection
 			}
 		}
 	}
-	
+
 
 	protected void fireConnectionSucceededEvent()
 	{
@@ -170,10 +170,10 @@ public class SemBluetoothConnection implements ISemConnection
 	 */
 	public static ISemConnection createConnection(String deviceAddress)
 	{
-		equivitalAddress=deviceAddress;			
-		return new SemBluetoothConnection(deviceAddress);		
+		equivitalAddress=deviceAddress;
+		return new SemBluetoothConnection(deviceAddress);
 	}
-	
+
 	/**
 	 * Factory method used to create a new bluetooth based ISemConnection interface with no particular device specified.
 	 * @return An empty bluetooth connection.
@@ -182,28 +182,28 @@ public class SemBluetoothConnection implements ISemConnection
 	{
 		return new SemBluetoothConnection(null);
 	}
-	
-	private SemBluetoothConnection(String address) 
-	{ 
-		
+
+	private SemBluetoothConnection(String address)
+	{
+
 		/*SensorService.serviceContext.registerReceiver(reconnectionRequestReciever,reconnectionRequest);
-		
+
 		SensorService.serviceContext.registerReceiver(startReconnectionReciever,startRequest);*/
-		
+
 		_portAddress = address;
 
 		// Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
-        
+
         if(address != null) {
 			connectToDeviceWithAddress(address);
 		}
-        
-	}	
-	
+
+	}
+
 	/**
-	 * Connect to the specified device via MAC address. 
+	 * Connect to the specified device via MAC address.
 	 * @param address MAC address in the form AA:BB:CC:DD:EE:FF
 	 */
 	public void connect(String address)
@@ -216,13 +216,13 @@ public class SemBluetoothConnection implements ISemConnection
 			}
 		}
 	}
-	
+
 	private void pushData(byte[] buffer, int size)
 	{
 		_args.data = buffer;
 		_args.count = size;
 		_args.offset = 0;
-		
+
 		fireDataReceivedEvent(_args);
 	}
 
@@ -231,7 +231,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * For Android Bluetooth connections there is no manager so this method always returns null.
 	 * @return A connection manager instance (or null if the connection is unmanaged)
 	 */
-	
+
 	@Override
 	public ISemConnectionManager getManager()
 	{
@@ -242,7 +242,7 @@ public class SemBluetoothConnection implements ISemConnection
 	 * Gets the connection information as a string.
 	 * @return The connection string.
 	 */
-	
+
 	@Override
 	public String getConnectionInfo()
 	{
@@ -253,13 +253,13 @@ public class SemBluetoothConnection implements ISemConnection
 	 * Determines whether a bluetooth device is currently connected.
 	 * @return True if a device is connected.
 	 */
-	
+
 	@Override
 	public boolean isConnected()
 	{
 		return isSocketConnected();
 	}
-	
+
 	/**
 	 * Determines whether there is a connect attempt in progress.
 	 * @return True if a bluetooth device is attempting to connect.
@@ -268,9 +268,9 @@ public class SemBluetoothConnection implements ISemConnection
 	{
 		return isSocketConnecting();
 	}
-	
+
 	/**
-	 * Determines if the underlying connection is closed. 
+	 * Determines if the underlying connection is closed.
 	 * @return True if the connection has been closed.
 	 */
 	public boolean isClosed()
@@ -283,14 +283,14 @@ public class SemBluetoothConnection implements ISemConnection
 	 * @param dataToWrite The data to write to the connection as a byte array.
 	 * @return True if successful.
 	 */
-	
+
 	@Override
 	public boolean write(byte[] dataToWrite)
 	{
 		if(mState == STATE_NONE) {
 			return false;
 		}
-		
+
 		writeData(dataToWrite, dataToWrite.length);
 		return true;
 	}
@@ -298,9 +298,9 @@ public class SemBluetoothConnection implements ISemConnection
 	/**
 	 * Writes the specified string to the underlying bluetooth device connection.
 	 * @param dataToWrite THe string information.
-	 * @return True if successful. 
+	 * @return True if successful.
 	 */
-	
+
 	@Override
 	public boolean write(String dataToWrite)
 	{
@@ -310,7 +310,7 @@ public class SemBluetoothConnection implements ISemConnection
 	/**
 	 * Closes the underlying bluetooth connection.
 	 */
-	
+
 	@Override
 	public void close()
 	{
@@ -318,8 +318,8 @@ public class SemBluetoothConnection implements ISemConnection
 			disconnect();
 		}
 	}
-	
-    
+
+
     /**
      * Start the service. */
     private synchronized void start()
@@ -329,7 +329,7 @@ public class SemBluetoothConnection implements ISemConnection
 
         // Cancel any thread currently running a connection
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
-        
+
         setState(STATE_LISTEN);
     }
 
@@ -347,7 +347,7 @@ public class SemBluetoothConnection implements ISemConnection
         		// Cancel any thread currently running a connection
         		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
 
-        		setState(STATE_NONE); 
+        		setState(STATE_NONE);
         		//reconnectDevice();
         		// Start the thread to connect with the given device
         		mConnectThread = new ConnectThread(device);
@@ -359,7 +359,7 @@ public class SemBluetoothConnection implements ISemConnection
         	}
         }
     }
-	    
+
     /**
      * Returns the current device MAC address.
      * @return MAC address in the form AA:BB:CC:DD:EE:FF
@@ -377,7 +377,7 @@ public class SemBluetoothConnection implements ISemConnection
     {
     	return iConnectedBluetoothDeviceName;
     }
-	    
+
     /**
      * Start the ConnectedThread to begin managing a Bluetooth connection
      * @param socket  The BluetoothSocket on which the connection was made
@@ -387,7 +387,7 @@ public class SemBluetoothConnection implements ISemConnection
     {
     	iConnectedBluetoothDeviceAddress = device.getAddress();
     	iConnectedBluetoothDeviceName = device.getName();
-    	
+
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
 
@@ -404,11 +404,11 @@ public class SemBluetoothConnection implements ISemConnection
         }
     }
 
-    
+
     /**
      * Stop all threads
      */
-    public synchronized static void disconnect()
+	public synchronized void disconnect()
     {
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
@@ -416,7 +416,7 @@ public class SemBluetoothConnection implements ISemConnection
         //reconnectDevice();
 		//fireConnectionClosedEvent();
     }
-    
+
     private synchronized void writeData(byte[] bufferToWrite, int sizeOfBuffer)
     {
     	if(mConnectedThread != null)
@@ -429,34 +429,34 @@ public class SemBluetoothConnection implements ISemConnection
     {
     	return (getState() == STATE_CONNECTED);
     }
-    
+
     private boolean isSocketConnecting()
     {
     	return (getState() == STATE_CONNECTING);
     }
-    
-   
+
+
     private synchronized static void setState(int state)
     {
-        mState = state; 
+        mState = state;
         /*if(mState==0 && equivitalAddress!=null)
-        {        	
-        	  reconnectDevice();        	
+        {
+        	  reconnectDevice();
         }*/
         sensorHandler = SensorConnections.SensorHandler;
         sensorHandler.obtainMessage(SensorUtilities.SENSOR_STATE_CHANGE,state,-1).sendToTarget();
     }
-	  	
-   
-	
-	
+
+
+
+
     public static synchronized int getState()
     {
         return mState;
     }
 
     private void connectionFailed(IOException e)
-    {   
+    {
     	Log.d("SEM","Connection Failed");
     	if(reconnectionStarted!=true)
     	{
@@ -469,9 +469,9 @@ public class SemBluetoothConnection implements ISemConnection
     {
         fireConnectionSucceededEvent();
     }
-    
+
     private void connectionLost(IOException e)
-    {     	
+    {
     	Log.d("SEM","Connection Lost");
     	if(reconnectionStarted!=true)
     	{
@@ -480,19 +480,19 @@ public class SemBluetoothConnection implements ISemConnection
         }
     }
 
-    
+
 
     public void reconnectDevice()
     {
     	reConnectTimer = new Timer();
 		if (!SensorLocationService.cancelBlueToothFlag){
 			Reconnect mReconnectDevice=new Reconnect();
-			reConnectTimer.scheduleAtFixedRate(mReconnectDevice,1000,3000);   
+			reConnectTimer.scheduleAtFixedRate(mReconnectDevice,1000,3000);
 			setState(STATE_RECONNECTING);
 		}
     }
-					
-		
+
+
     public class Reconnect extends TimerTask{
 		@Override
 		public void run() {
@@ -509,10 +509,10 @@ public class SemBluetoothConnection implements ISemConnection
 				Log.d("SEM","disconnect");
 				reConnectTimer.cancel();
 				reConnectCount=0;
-				reconnectionStarted=false;												
+				reconnectionStarted=false;
 				if(isConnected()!=true)
 				{
-					fireConnectionClosedEvent();					
+					fireConnectionClosedEvent();
 			        setState(STATE_NONE);
 			        if (!SensorLocationService.cancelBlueToothFlag){
 			        	Intent i=new Intent(SensorUtilities.ACTION_LOST_CONNECTION_SOUND);
@@ -520,12 +520,12 @@ public class SemBluetoothConnection implements ISemConnection
 			        }
 				}
 			}
-			
-		} 
+
+		}
     }
-    
-    
-   
+
+
+
 	/**
      * This thread runs while attempting to make an outgoing connection
      * with a device. It runs straight through; the connection either
@@ -539,7 +539,7 @@ public class SemBluetoothConnection implements ISemConnection
         {
         	return mmSocket != null;
         }
-        
+
         public ConnectThread(BluetoothDevice device)
         {
             mmDevice = device;
@@ -549,7 +549,7 @@ public class SemBluetoothConnection implements ISemConnection
             try
             {
                 tmp = device.createRfcommSocketToServiceRecord(SERIAL_PROFILE_UUID);
-            } 
+            }
             catch (IOException e)
             {
             	tmp = null;
@@ -567,7 +567,7 @@ public class SemBluetoothConnection implements ISemConnection
             mBluetoothAdapter.cancelDiscovery();
 
             // Make a connection to the BluetoothSocket
-            try 
+            try
             {
                 // This is a blocking call and will only return on a successful connection or an exception
                 mmSocket.connect();
@@ -610,18 +610,18 @@ public class SemBluetoothConnection implements ISemConnection
         }
     }
 
-   
+
     private class ConnectedThread extends Thread
     {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
-        
+
         public boolean isValidDevice()
         {
         	return mmInStream != null && mmOutStream != null;
         }
-        
+
         public ConnectedThread(BluetoothSocket socket)
         {
             mmSocket = socket;
@@ -648,16 +648,16 @@ public class SemBluetoothConnection implements ISemConnection
         }
 
         volatile boolean sentinel = false;
-       
+
         @Override
 		public void run()
         {
         	if(!isValidDevice()) {
 				return;
 			}
-        	
+
             connectionSucceeded();
-            
+
             final int maxBufSize = 2048;
             byte[] data = new byte[maxBufSize];
 
@@ -672,7 +672,7 @@ public class SemBluetoothConnection implements ISemConnection
                     {
                     	pushData(data, length);
                     }
-	                
+
                     try
                     {
                     	if(length < maxBufSize) {
@@ -692,7 +692,7 @@ public class SemBluetoothConnection implements ISemConnection
             }
         }
 
-        public void writeData(byte[] bufferToWrite, int bufferSize) 
+        public void writeData(byte[] bufferToWrite, int bufferSize)
         {
         	if(mmOutStream != null)
     		{
@@ -704,11 +704,11 @@ public class SemBluetoothConnection implements ISemConnection
 				}
     		}
         }
-        
+
         public void cancel()
         {
         	sentinel = true;
-        	
+
             try
             {
                 mmSocket.close();
@@ -720,5 +720,5 @@ public class SemBluetoothConnection implements ISemConnection
     }
 
 
-	   
+
 }
