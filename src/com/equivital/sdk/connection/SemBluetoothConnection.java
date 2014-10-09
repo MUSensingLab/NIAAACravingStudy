@@ -61,7 +61,6 @@ public class SemBluetoothConnection implements ISemConnection
     static Timer reConnectTimer;
     PendingIntent startReconnection;
 
-
 	/**
 	 * Adds an event listener
 	 */
@@ -408,13 +407,13 @@ public class SemBluetoothConnection implements ISemConnection
     /**
      * Stop all threads
      */
-	public synchronized void disconnect()
-    {
+	public synchronized void disconnect() {
+		Log.d("SEM", "sem disconnect");
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
         setState(STATE_NONE);
         //reconnectDevice();
-		//fireConnectionClosedEvent();
+		fireConnectionClosedEvent();
     }
 
     private synchronized void writeData(byte[] bufferToWrite, int sizeOfBuffer)

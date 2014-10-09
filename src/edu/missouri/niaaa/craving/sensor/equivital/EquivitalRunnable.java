@@ -38,7 +38,7 @@ import edu.missouri.niaaa.craving.services.SensorLocationService;
 
 public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 		ISemDeviceAccelerometerEvents {
-	private final Logger log = Logger.getLogger(EquivitalRunnable.class);
+	private final static Logger log = Logger.getLogger(EquivitalRunnable.class);
 	private static SemDevice device;
 	private static EquivitalRunnable _instanceEQ = null;
 	String deviceAddress;
@@ -81,6 +81,8 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 			String ID) {
 		if (_instanceEQ == null) {
 			_instanceEQ = new EquivitalRunnable(address, name, ID);
+		} else {
+			log.d("EquivitalRunnable is not null");
 		}
 		return _instanceEQ;
 	}
@@ -288,7 +290,7 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 			e.printStackTrace();
 		}
 
-		log.d("DEFE!!!!!!!!!!!!!!!!!!!!!!!!!: tranis: " + dataPoints.size());
+		// log.d("DEFE!!!!!!!!!!!!!!!!!!!!!!!!!: tranis: " + dataPoints.size());
 		if (dataPoints.size() == 57) {
 			List<String> subList = dataPoints.subList(0, 56);
 			String data = subList.toString();
@@ -531,13 +533,15 @@ public class EquivitalRunnable implements Runnable, ISemDeviceSummaryEvents,
 	// }
 
 	public void stop() {
+		log.d("Stop Connection");
 		count = 0;
 		chestAccList.clear();
 		// medianList.clear();
 		// medianWindowQueue.clear();
-		device.stop(true);
-		SemBluetoothConnection.disconnect();
+		// SemBluetoothConnection.disconnect();
 		device.removeAccelerometerEventListener(this);
+		device.stop();
+		_instanceEQ = null;
 	}
 
 }

@@ -199,6 +199,7 @@ public class InternalRunnable implements Runnable, SensorEventListener {
 
 	public void stop() {
 		mSensorManager.unregisterListener(this);
+		_instanceInternal = null;
 	}
 
 	// Ricky 2013/12/09
