@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.missouri.niaaa.craving"
-    android:versionCode="027"
-    android:versionName="2.7" >
+    android:versionCode="0208"
+    android:versionName="2.0.8" >
 
     <uses-sdk
         android:minSdkVersion="19"
